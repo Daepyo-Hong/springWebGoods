@@ -34,7 +34,12 @@ public class GoodsImg extends BaseEntity{
     @ManyToOne// N:1관계에서 물리FK는 무조건 N쪽 테이블에 생성
     private Goods goods;
 
-    public GoodsImg updateName(String name) {
+    public GoodsImg goods(Goods goods){
+        this.goods=goods;
+        return this;
+    }
+
+    public GoodsImg update(String name) {
         this.name=name;
         return this;
     }

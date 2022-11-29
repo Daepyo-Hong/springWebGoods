@@ -54,7 +54,7 @@ class SpringWebGoodsApplicationTests {
     @Test
     void 이미지수정(){
         GoodsImg goodsImg = goodsImgRepository.findById(1L).get();
-        goodsImg.updateName("img_1_update.jpg");
+        goodsImg.update("img_1_update.jpg");
         goodsImgRepository.save(goodsImg);
     }
 

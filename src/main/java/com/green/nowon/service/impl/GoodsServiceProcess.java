@@ -10,6 +10,7 @@ import com.green.nowon.utils.MyFileUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,18 +22,17 @@ public class GoodsServiceProcess implements GoodsService {
     @Autowired
     private GoodsImgRepository goodsImgRepository;
 
+    @Value("${multipart.upload.path}")  //프로퍼티즈에있는 값 받아오는것
+    private String uploadPath;
+
     @Override
     public void save(GoodsInsertDTO dto, MultipartFile img) {
 
-        Goods result = goodsRepository.save(dto.toEntity());
-        MyFileUtils.fileUpload(img);
+        //Goods result = goodsRepository.save(dto.toEntity());
 
-        String url = "/images/goods/";
-        String name = img.getOriginalFilename();
-        long size = img.getSize();
-        goodsImgRepository.save(GoodsImg.builder()
-                        .url(url).name(name).size(size)
-                        .goods(result)
-                        .build());
+        goodsImgRepository.save(
+                MyFileUtils.fileUpload(img, uploadPath)
+                        .goods(goodsRepository.save( dto.toEntity() ))
+        );
     }
 }
